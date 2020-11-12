@@ -10,9 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -56,7 +58,9 @@ ROOT_URLCONF = 'TalanaChallenge.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,7 +75,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TalanaChallenge.wsgi.application'
 
-
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -125,3 +131,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'users.User'
+
+# Celery
+INSTALLED_APPS += ['taskapp.celery.CeleryAppConfig']
+CELERY_BROKER_URL = 'pyamqp://talana:talana@localhost/talanav'
+CELERY_RESULT_BACKEND = 'rpc://'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERYD_TASK_TIME_LIMIT = 15
+CELERYD_TASK_SOFT_TIME_LIMIT = 10
+CELERY_TASK_ALWAYS_EAGER = False
+CELERY_TASK_ALWAYS_EAGER_PROPAGATES = False
