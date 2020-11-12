@@ -1,0 +1,35 @@
+version: "3.8"
+
+services: 
+    raffle_api:
+        build: .
+        environment: 
+            DJANGO_SETTINGS_MODULE: "TalanaChallenge.settings"
+        volumes: 
+            - .:/opt/scp/
+        ports:
+            - "8000:8000"
+            - "3000:3000"
+        depends_on: 
+            - db
+            - broker
+    
+    db:
+        image: "postgres:13"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        environment: 
+            POSTGRES_PASSWORD: "postgres"
+        ports:
+            - "5432:5432"
+
+    broker:
+        image: "rabbitmq:3"
+        ports:
+            - "5672:5672"
+        environment: 
+            RABBITMQ_DEFAULT_USER: "talana"
+            RABBITMQ_DEFAULT_PASS: "talana"
+            RABBITMQ_DEFAULT_VHOST: "talanav"
+volumes: 
+    postgres_data:
