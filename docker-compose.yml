@@ -6,7 +6,7 @@ services:
         environment: 
             DJANGO_SETTINGS_MODULE: "TalanaChallenge.settings"
         volumes: 
-            - .:/opt/scp/
+            - .:/opt/TalanaChallenge
         ports:
             - "8000:8000"
             - "3000:3000"
