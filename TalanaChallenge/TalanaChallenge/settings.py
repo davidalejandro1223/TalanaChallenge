@@ -84,7 +84,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'raffle',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST':'db',
