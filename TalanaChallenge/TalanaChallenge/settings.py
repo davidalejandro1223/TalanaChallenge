@@ -11,18 +11,19 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$-1(5zg5w5^yi!tjrzjl^*44=61dz2%ah1+^$&m7ge-ws7(na^'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,14 +78,20 @@ WSGI_APPLICATION = 'TalanaChallenge.wsgi.application'
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'raffle',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST':'db',
@@ -133,9 +140,13 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'users.User'
 
 # Celery
-INSTALLED_APPS += ['taskapp.celery.CeleryAppConfig']
-CELERY_BROKER_URL = 'pyamqp://talana:talana@localhost/talanav'
-CELERY_RESULT_BACKEND = 'rpc://'
+CELERY_BROKER_URL = 'pyamqp://{}:{}@{}/{}'.format(
+    os.getenv('BROKER_PASSWORD'),
+    os.getenv('BROKER_USER'),
+    os.getenv('BROKER_HOST'),
+    os.getenv('BROKER_VHOST')
+)
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

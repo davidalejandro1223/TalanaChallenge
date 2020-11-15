@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils import timezone
-
+from django.urls import reverse_lazy
 # Models
 from users.models import User
 
@@ -38,12 +38,15 @@ def send_confirmation_email(user_pk):
     verification_token = gen_verification_token(user)
     subject = 'Bienvenido {}! Verifica tu cuenta para participar en el sorteo'.format(user.first_name)
     from_email = 'Sorteo papel de por vida! <noreply@sorteopapel.com>'
+    verification_url = reverse_lazy('users:verify_account', kwargs={'token':verification_token})
     
     content = render_to_string(
         'emails/users/account_verification.html',
-        {'token': verification_token, 'user': user}
+        {'verification_url': verification_url, 'user': user}
     )
+    print(content)
     
     msg = EmailMultiAlternatives(subject, content, from_email, [user.email])
+    msg.content_subtype = 'html'
     msg.attach_alternative(content, "text/html")
     msg.send()

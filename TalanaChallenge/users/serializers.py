@@ -2,10 +2,10 @@
 from rest_framework import serializers
 
 # Models
-from users.models import User
+from .models import User
 
 # Task
-from taskapp.tasks import send_confirmation_email
+from .tasks import send_confirmation_email
 class CreateUserSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
@@ -21,4 +21,8 @@ class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-    
+        extra_kwargs = {
+            'password':{
+                'write_only':True
+            }
+        }
