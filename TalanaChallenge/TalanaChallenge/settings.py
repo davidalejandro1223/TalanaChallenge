@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+from rest_framework.fields import EmailField
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,14 +79,20 @@ WSGI_APPLICATION = 'TalanaChallenge.wsgi.application'
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'davidalejandro1223@gmail.com'
+EMAIL_HOST_PASSWORD = 'uscemkjyihgesaxu'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'raffle',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST':'db',
@@ -133,8 +141,7 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'users.User'
 
 # Celery
-INSTALLED_APPS += ['taskapp.celery.CeleryAppConfig']
-CELERY_BROKER_URL = 'pyamqp://talana:talana@localhost/talanav'
+CELERY_BROKER_URL = 'pyamqp://talana:talana@broker/talanav'
 CELERY_RESULT_BACKEND = 'rpc://'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
