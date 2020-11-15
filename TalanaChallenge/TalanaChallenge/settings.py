@@ -14,6 +14,8 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
+from rest_framework.fields import EmailField
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -140,6 +142,7 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'users.User'
 
 # Celery
+<<<<<<< HEAD
 CELERY_BROKER_URL = 'pyamqp://{}:{}@{}/{}'.format(
     os.getenv('BROKER_PASSWORD'),
     os.getenv('BROKER_USER'),
@@ -147,6 +150,10 @@ CELERY_BROKER_URL = 'pyamqp://{}:{}@{}/{}'.format(
     os.getenv('BROKER_VHOST')
 )
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+=======
+CELERY_BROKER_URL = 'pyamqp://talana:talana@broker/talanav'
+CELERY_RESULT_BACKEND = 'rpc://'
+>>>>>>> e97f2f845e29ddec23861e59f3b881b37d3c4df6
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
